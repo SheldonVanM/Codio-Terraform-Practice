@@ -28,6 +28,11 @@ variable "lambda_layer_bucket" {
   default     = "python-oracle-connection-layer-bucket"
 }
 
+variable "lambda_function_name" {
+  description = "The lambda layer function"
+  default     = "core-substance-registration-api"
+}
+
 variable "python_oracle_connection_layer_compatible_runtimes" {
   description = "The compatible runtimes for the Python Oracle connection layer"
   default     = "python3.8"
@@ -48,7 +53,7 @@ variable "aws_cloudwatch_log_group_name" {
 
 variable "aws_cloudwatch_retention_days" {
   description = "Retention days for CloudWatch"
-  default     = 7
+  default     = 14
   type        = number
 }
 

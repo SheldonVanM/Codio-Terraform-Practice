@@ -1,4 +1,5 @@
-
-data "aws_s3_bucket" "bucket" {
-  bucket = var.lambda_layer_bucket
-}
+# data "archive_file" "lambda_function_file" {
+#   type        = "zip"
+#   source_file = "app.py"
+#   output_path = "lambda_function.zip"
+# }

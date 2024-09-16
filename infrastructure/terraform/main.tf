@@ -3,24 +3,23 @@
 ############################################################################################################
 
 locals {
-
+  layer_zip_path               = "layer.zip"
   layer_name                   = "python-oracle-connection-layer"
   oracle_connection_layer_path = "./../zip/layers/oracle-layer.zip"
-
 }
 
 ############################################################################################################
 ### LAMBDA & AUXILLARIES ###
 ############################################################################################################
 resource "aws_lambda_function" "core-substance-registration-api-lambda" {
-  function_name = "core-substance-registration-api"
-  handler       = "app.lambda_function"
+  description   = "Lambda function to handle application requests fed in from API"
+  function_name = var.lambda_function_name
+  handler       = "app.lambda_handler"
   runtime       = "python3.8"
   role          = aws_iam_role.lambda_role.arn
   filename      = var.path_to_application_zip
   memory_size   = 512
   timeout       = 300
-  description   = "Lambda function to handle application requests fed in from API"
   layers = [
     #aws_lambda_layer_version.python-oracle-connection-layer,
     var.aws_lambda_cloud_insights_arn,
@@ -38,9 +37,9 @@ resource "aws_s3_bucket" "oracle-python-layer-bucket" {
 }
 
 # Upload zip file for the 
-resource "aws_s3_object" "python_oracle_connection_layer_object" {
+resource "aws_s3_object" "python_oracle_connection_layer_zip" {
   bucket = aws_s3_bucket.oracle-python-layer-bucket.id
-  key    = "./${local.layer_name}"
+  key    = "lambda_layers/${local.layer_name}/${local.layer_zip_path}"
   source = local.oracle_connection_layer_path
   etag   = filebase64sha256("./../zip/layers/oracle-layer.zip")
 }
@@ -49,7 +48,7 @@ resource "aws_s3_object" "python_oracle_connection_layer_object" {
 # AWS LAMBDA LAYERS #
 resource "aws_lambda_layer_version" "python_oracle_connection_layer" {
   s3_bucket           = aws_s3_bucket.oracle-python-layer-bucket.id
-  s3_key              = aws_s3_object.python_oracle_connection_layer_object.key
+  s3_key              = aws_s3_object.python_oracle_connection_layer_zip.key
   layer_name          = local.layer_name
   compatible_runtimes = [var.python_oracle_connection_layer_compatible_runtimes]
   #skip_destroy = true
@@ -101,13 +100,11 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
 ############################################################################################################
 ### CloudWatch Insights ###
 ############################################################################################################
-# resource "aws_cloudwatch_log_group" "lambda_function_log_group" {
-#   name              = var.aws_cloudwatch_log_group_name
-#   retention_in_days = var.aws_cloudwatch_retention_days
+resource "aws_cloudwatch_log_group" "lambda_function_log_group" {
+  name              = var.aws_cloudwatch_log_group_name
+  retention_in_days = var.aws_cloudwatch_retention_days
+}
 
-# }
-
-# API GATEWAY #
 
 
 
