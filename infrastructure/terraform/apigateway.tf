@@ -26,7 +26,8 @@ resource "aws_api_gateway_integration" "lambda_integration" {
   resource_id             = aws_api_gateway_resource.root.id
   http_method             = aws_api_gateway_method.proxy.http_method
   integration_http_method = "POST"
-  type                    = "MOCK"
+  type                    = "AWS_PROXY"
+  uri                     = aws_lambda_function.core-substance-registration-api-lambda.invoke_arn
 }
 
 resource "aws_api_gateway_method_response" "proxy" {
@@ -50,7 +51,7 @@ resource "aws_api_gateway_integration_response" "lambda_integration" {
 
 resource "aws_api_gateway_deployment" "deployment" {
   depends_on = [
-    aws_api_gateway_integration.lambda_integration,
+    aws_api_gateway_integration.lambda_integration
   ]
   rest_api_id = aws_api_gateway_rest_api.my_api.id
   stage_name  = "dev"

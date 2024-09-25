@@ -1,7 +1,6 @@
 ############################################################################################################
 ### RESOURCES ###
 ############################################################################################################
-
 locals {
   layer_zip_path               = "layer.zip"
   layer_name                   = "python-oracle-connection-layer"
@@ -25,6 +24,13 @@ resource "aws_lambda_function" "core-substance-registration-api-lambda" {
     var.aws_lambda_cloud_insights_arn,
     var.aws_secret_parameter_extension_layer_arn
   ]
+}
+
+resource "aws_lambda_permission" "allow_api" {
+  statement_id  = "AllowApiGatewayInvocation"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.core-substance-registration-api-lambda.function_name
+  principal     = "apigateway.amazonaws.com"
 }
 
 
@@ -104,8 +110,4 @@ resource "aws_cloudwatch_log_group" "lambda_function_log_group" {
   name              = var.aws_cloudwatch_log_group_name
   retention_in_days = var.aws_cloudwatch_retention_days
 }
-
-
-
-
 
