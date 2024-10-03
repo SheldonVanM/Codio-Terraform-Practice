@@ -1,8 +1,17 @@
 TODO:
 1. Resolve reason for Lambda not being called (DONE - Verify later)
-2. Resolve issue with file structure in Lambda code 
+2. Resolve issue with file structure in Lambda code (DONE)
 3. Resolve issue with API Gateway not being connected automatically
 4. Further look into how to make API Gateway PROD ready
 5. Further investigate how to make CloudWatch PROD ready
 6. Work to further develop unit tests
 7. See what can be done with Gitlab
+
+Results:
+Steps for 2.
+1. Create a EC2 with Linux
+2. Install git (sudo yum install git)
+3. Git clone project
+4. Move into src file and run zip -r path_to_zip_output .
+5. git push
+6. Run terraform locally
