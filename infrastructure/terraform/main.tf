@@ -31,6 +31,7 @@ resource "aws_lambda_permission" "allow_api" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.core-substance-registration-api-lambda.function_name
   principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.my_api.execution_arn}/*"
 }
 
 

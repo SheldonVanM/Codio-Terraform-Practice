@@ -1,11 +1,11 @@
 TODO:
 1. Resolve reason for Lambda not being called (DONE - Verify later)
 2. Resolve issue with file structure in Lambda code (DONE)
-3. Resolve issue with API Gateway not being connected automatically
+3. Resolve issue with API Gateway not being connected automatically (DONE - Verify later)
 4. Further look into how to make API Gateway PROD ready
 5. Further investigate how to make CloudWatch PROD ready
 6. Work to further develop unit tests
-7. See what can be done with Gitlab
+7. See what can be done with Gitlab to zip or run other CI/CD tasks
 
 Results:
 Steps for 2.
